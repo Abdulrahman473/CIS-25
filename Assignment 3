@@ -1,1 +1,64 @@
+#include <iostream>
+using namespace std;
 
+int main() {
+    int choice;
+
+    cout << "=== Simple Menu ===" << endl;
+    cout << "1. Say Hello" << endl;
+    cout << "2. Say Goodbye" << endl;
+    cout << "3. Exit" << endl;
+    cout << "Enter your choice: ";
+    cin >> choice;
+
+    if (choice == 1) {
+        cout << "Hello!" << endl;
+    }
+
+    if (choice == 2) {
+        cout << "Goodbye!" << endl;
+    }
+
+    if (choice == 3) {
+        cout << "Exiting program." << endl;
+    }
+
+    return 0;
+}
+
+
+
+
+#include <iostream>
+using namespace std;
+
+int main() {
+
+    // FIXED: Properly declared three float variables
+    float n1, n2, n3;
+
+    // FIXED: Clear prompt for user input
+    cout << "Enter three numbers: ";
+    
+    // FIXED: Correct input syntax
+    cin >> n1 >> n2 >> n3;
+
+    // FIXED: Nested if statement to find the largest number
+    if (n1 >= n2) {
+        if (n1 >= n3) {
+            // FIXED: Correct output variable
+            cout << "Largest number: " << n1 << endl;
+        } else {
+            cout << "Largest number: " << n3 << endl;
+        }
+    } else {
+        if (n2 >= n3) {
+            // FIXED: Correct output variable
+            cout << "Largest number: " << n2 << endl;
+        } else {
+            cout << "Largest number: " << n3 << endl;
+        }
+    }
+
+    return 0;
+}
