@@ -1,1 +1,55 @@
+#include <iostream>
+using namespace std;
 
+// Function prototypes
+void showMenu();
+void addNumbers();
+void viewMessage();
+
+// Displays the menu (based on your screenshot example)
+void showMenu() {
+    cout << "\n===== MENU =====" << endl;
+    cout << "1. Add Numbers" << endl;
+    cout << "2. View Message" << endl;
+    cout << "3. Exit" << endl;
+    cout << "Enter your choice: ";
+}
+
+// Function for option 1
+void addNumbers() {
+    int a, b;
+    cout << "Enter two numbers: ";
+    cin >> a >> b;
+    cout << "Sum = " << a + b << endl;
+}
+
+// Function for option 2
+void viewMessage() {
+    cout << "Welcome to the C++ Menu Program!" << endl;
+}
+
+int main() {
+    int option;
+
+    // do-while loop exactly like the screenshot example
+    do {
+        showMenu();          // Call menu function
+        cin >> option;       // Get user choice
+
+        if (option == 1) {
+            addNumbers();    // Call function
+        }
+        else if (option == 2) {
+            viewMessage();   // Call function
+        }
+        else if (option == 3) {
+            cout << "Exiting program..." << endl;
+        }
+        else {
+            cout << "Invalid choice. Try again." << endl;
+        }
+
+    } while (option != 3);   // Loop until user chooses Exit
+
+    return 0;
+}
