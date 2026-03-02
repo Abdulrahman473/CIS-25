@@ -1,1 +1,81 @@
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+using namespace std;
 
+class Item {
+public:
+    string name;
+    double price;
+    int quantity;
+
+    double getTotalPrice() {
+        return price * quantity;
+    }
+};
+
+int main() {
+    int choice;
+
+    do {
+        cout << "\n1. Add Item to Cart\n";
+        cout << "2. View Checkout\n";
+        cout << "3. Exit\n";
+        cout << "Choice: ";
+        cin >> choice;
+
+        
+        if (choice == 1) {
+            Item x;
+
+            cout << "Enter item name: ";
+            cin >> x.name;
+
+            cout << "Enter item price: ";
+            cin >> x.price;
+
+            cout << "Enter item quantity: ";
+            cin >> x.quantity;
+
+            ofstream file("cart.txt", ios::app); 
+            file << x.name << " " << x.price << " " << x.quantity << endl;
+            file.close();
+
+            cout << "Item added to cart.\n";
+        }
+
+       
+        else if (choice == 2) {
+            ifstream file("cart.txt");
+
+            Item x;
+            double grandTotal = 0;
+
+            cout << "\n===== CHECKOUT =====\n";
+
+            while (file >> x.name >> x.price >> x.quantity) {
+                double total = x.getTotalPrice();
+                cout << x.name << " - $"
+                     << fixed << setprecision(2) << x.price
+                     << " x " << x.quantity
+                     << " = $" << total << endl;
+
+                grandTotal += total;
+            }
+
+            cout << "----------------------\n";
+            cout << "Total: $" << grandTotal << endl;
+
+            file.close();
+        }
+
+        
+        else if (choice == 3) {
+            cout << "Thank you for shopping!\n";
+            cout << "Exiting program...\n";
+        }
+
+    } while (choice != 3);
+
+    return 0;
+}
