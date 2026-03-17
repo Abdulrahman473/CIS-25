@@ -1,1 +1,88 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
 
+using namespace std;
+
+// Class representing one email record
+class Email {
+public:
+    string label;
+    string text;
+    string length;
+    string numLinks;
+    string numCaps;
+
+    // Constructor
+    Email(string l, string t, string len, string links, string caps) {
+        label = l;
+        text = t;
+        length = len;
+        numLinks = links;
+        numCaps = caps;
+    }
+
+    // Function to display email information
+    void display() {
+        cout << "Label: " << label << endl;
+        cout << "Text: " << text << endl;
+        cout << "Length: " << length << endl;
+        cout << "Links: " << numLinks << endl;
+        cout << "Capital Letters: " << numCaps << endl;
+        cout << "-----------------------------" << endl;
+    }
+};
+
+int main() {
+
+    // Open CSV file
+    ifstream file("spam.csv");
+
+    // Check if file opened correctly
+    if (!file.is_open()) {
+        cout << "Error: Could not open the file." << endl;
+        return 1;
+    }
+
+    vector<Email> emails;
+
+    string line;
+
+    // Skip header row
+    getline(file, line);
+
+    int count = 0;
+
+    // Read at least 10 entries
+    while (getline(file, line) && count < 10) {
+
+        stringstream ss(line);
+
+        string label, text, length, links, caps;
+
+        // Extract 5 fields from the CSV row
+        getline(ss, label, ',');
+        getline(ss, text, ',');
+        getline(ss, length, ',');
+        getline(ss, links, ',');
+        getline(ss, caps, ',');
+
+        // Create Email object and store it
+        Email email(label, text, length, links, caps);
+        emails.push_back(email);
+
+        count++;
+    }
+
+    file.close();
+
+    // Display the information in readable format
+    cout << "Displaying Email Spam Dataset (First 10 Entries)\n" << endl;
+
+    for (int i = 0; i < emails.size(); i++) {
+        emails[i].display();
+    }
+
+    return 0;
+}
