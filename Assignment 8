@@ -1,1 +1,193 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
 
+struct Patient
+{
+    int id;
+    string name;
+    int age;
+    string gender;
+    string diagnosis;
+};
+
+int binarySearch(Patient p[], int size, int id)
+{
+    int left = 0;
+    int right = size - 1;
+
+    while(left <= right)
+    {
+        int mid = (left + right) / 2;
+
+        if(p[mid].id == id)
+            return mid;
+
+        if(p[mid].id < id)
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+
+    return -1;
+}
+
+void sortPatients(Patient p[], int size)
+{
+    for(int i=0;i<size;i++)
+    {
+        for(int j=i+1;j<size;j++)
+        {
+            if(p[i].id > p[j].id)
+            {
+                Patient temp = p[i];
+                p[i] = p[j];
+                p[j] = temp;
+            }
+        }
+    }
+}
+
+int main()
+{
+    Patient* patients = new Patient[100];
+    int count = 0;
+    int choice;
+
+    ifstream in("patients.txt");
+
+    if(in)
+    {
+        while(in >> patients[count].id)
+        {
+            in.ignore();
+            getline(in, patients[count].name, ',');
+            in >> patients[count].age;
+            in >> patients[count].gender;
+            in.ignore();
+            getline(in, patients[count].diagnosis);
+            count++;
+        }
+        in.close();
+    }
+
+    do
+    {
+        cout << "\n1.Add Patient\n";
+        cout << "2.Display Patients\n";
+        cout << "3.Search Patient\n";
+        cout << "4.Update Patient\n";
+        cout << "5.Save to File\n";
+        cout << "6.Exit\n";
+        cout << "Choice: ";
+        cin >> choice;
+
+        if(choice == 1)
+        {
+            cout << "ID: ";
+            cin >> patients[count].id;
+
+            cin.ignore();
+            cout << "Name: ";
+            getline(cin, patients[count].name);
+
+            cout << "Age: ";
+            cin >> patients[count].age;
+
+            cout << "Gender: ";
+            cin >> patients[count].gender;
+
+            cin.ignore();
+            cout << "Diagnosis: ";
+            getline(cin, patients[count].diagnosis);
+
+            count++;
+        }
+
+        else if(choice == 2)
+        {
+            for(int i=0;i<count;i++)
+            {
+                cout << "\nID: " << patients[i].id;
+                cout << "\nName: " << patients[i].name;
+                cout << "\nAge: " << patients[i].age;
+                cout << "\nGender: " << patients[i].gender;
+                cout << "\nDiagnosis: " << patients[i].diagnosis << endl;
+            }
+        }
+
+        else if(choice == 3)
+        {
+            int id;
+            cout << "Enter ID: ";
+            cin >> id;
+
+            sortPatients(patients,count);
+
+            int pos = binarySearch(patients,count,id);
+
+            if(pos != -1)
+            {
+                cout << "Patient Found\n";
+                cout << patients[pos].name << endl;
+            }
+            else
+            {
+                cout << "Not found\n";
+            }
+        }
+
+        else if(choice == 4)
+        {
+            int id;
+            cout << "Enter ID to update: ";
+            cin >> id;
+
+            sortPatients(patients,count);
+
+            int pos = binarySearch(patients,count,id);
+
+            if(pos != -1)
+            {
+                cin.ignore();
+                cout << "New Name: ";
+                getline(cin, patients[pos].name);
+
+                cout << "New Age: ";
+                cin >> patients[pos].age;
+
+                cout << "New Gender: ";
+                cin >> patients[pos].gender;
+
+                cin.ignore();
+                cout << "New Diagnosis: ";
+                getline(cin, patients[pos].diagnosis);
+            }
+            else
+                cout << "Patient not found\n";
+        }
+
+        else if(choice == 5)
+        {
+            ofstream out("patients.txt");
+
+            for(int i=0;i<count;i++)
+            {
+                out << patients[i].id << ","
+                    << patients[i].name << ","
+                    << patients[i].age << " "
+                    << patients[i].gender << ","
+                    << patients[i].diagnosis << endl;
+            }
+
+            out.close();
+            cout << "Saved.\n";
+        }
+
+    } while(choice != 6);
+
+    cout << "Good Bye!\n";
+
+    delete[] patients;
+}
