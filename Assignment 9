@@ -1,1 +1,75 @@
+#include <iostream>
+#include <string>
+using namespace std;
 
+// Base Class
+class User {
+protected:
+    string username;
+
+public:
+    User(string name) {
+        username = name;
+    }
+
+    // Virtual function
+    virtual void accessLevel() {
+        cout << username << " has general user access.\n";
+    }
+
+    // Virtual destructor (good practice)
+    virtual ~User() {}
+};
+
+// Derived Class: Employee
+class Employee : public User {
+public:
+    Employee(string name) : User(name) {}
+
+    void accessLevel() override {
+        cout << username << " (Employee): View inventory only.\n";
+    }
+};
+
+// Derived Class: Manager
+class Manager : public User {
+public:
+    Manager(string name) : User(name) {}
+
+    void accessLevel() override {
+        cout << username << " (Manager): View and update inventory.\n";
+    }
+};
+
+// Derived Class: Admin
+class Admin : public User {
+public:
+    Admin(string name) : User(name) {}
+
+    void accessLevel() override {
+        cout << username << " (Admin): Full access - add, update, delete inventory.\n";
+    }
+};
+
+// Main function
+int main() {
+    // Create objects
+    User* users[3];
+
+    users[0] = new Employee("Ali");
+    users[1] = new Manager("Sara");
+    users[2] = new Admin("Omar");
+
+    // Display access levels
+    cout << "Access Levels:\n\n";
+    for (int i = 0; i < 3; i++) {
+        users[i]->accessLevel();
+    }
+
+    // Clean up memory
+    for (int i = 0; i < 3; i++) {
+        delete users[i];
+    }
+
+    return 0;
+}
